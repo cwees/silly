@@ -2,15 +2,17 @@ import java.util.ArrayList;
 
 /**
  * Derived class that represents a compound statement in the SILLY language.
- *   @author Dave Reed
- *   @version 12/22/23
+ * 
+ * @author Dave Reed
+ * @version 12/22/23
  */
 public class Compound extends Statement {
     private ArrayList<Statement> stmts;
 
     /**
      * Reads in a compound statement from the specified stream
-     *   @param input the stream to be read from
+     * 
+     * @param input the stream to be read from
      */
     public Compound(TokenStream input) throws Exception {
         if (!input.next().toString().equals("{")) {
@@ -37,7 +39,8 @@ public class Compound extends Statement {
 
     /**
      * Converts the current compound statement into a String.
-     *   @return the String representation of this statement
+     * 
+     * @return the String representation of this statement
      */
     public String toString() {
         String str = "{\n";

@@ -1,53 +1,53 @@
 /**
  * Derived class that represents an expression in the SILLY language.
- *   @author Dave Reed
- *   @version 12/22/23
+ * 
+ * @author Dave Reed
+ * @version 12/22/23
  */
 public class Expression {
-    private Token tok;					// used for simple expressions (no operations)
-    private Token op;					// use for expressions involving operations
-    private Expression expr1, expr2;	// expr2 is used if unary op; both are used for binary
+    private Token tok; // used for simple expressions (no operations)
+    private Token op; // use for expressions involving operations
+    private Expression expr1, expr2; // expr2 is used if unary op; both are used for binary
 
     /**
      * Creates an expression from the specified TokenStream.
-     *   @param input the TokenStream from which the program is read
+     * 
+     * @param input the TokenStream from which the program is read
      */
     public Expression(TokenStream input) throws Exception {
-    	this.tok = input.next();
-    	if (this.tok.toString().equals("(")) {
-    		if (input.lookAhead().getType() == Token.Type.UNARY_OP) {
-    			this.op = input.next();
-    			this.expr2 = new Expression(input);
-    		} 
-    		else {
-    			this.expr1 = new Expression(input);
-    			if (input.lookAhead().getType() == Token.Type.BINARY_OP) {
-    			    this.op = input.next();
-    			    this.expr2 = new Expression(input);
-    			}
-    			else {
-    				throw new Exception("SYNTAX ERROR: Malformed expression");
-    			}
+        this.tok = input.next();
+        if (this.tok.toString().equals("(")) {
+            if (input.lookAhead().getType() == Token.Type.UNARY_OP) {
+                this.op = input.next();
+                this.expr2 = new Expression(input);
+            } else {
+                this.expr1 = new Expression(input);
+                if (input.lookAhead().getType() == Token.Type.BINARY_OP) {
+                    this.op = input.next();
+                    this.expr2 = new Expression(input);
+                } else {
+                    throw new Exception("SYNTAX ERROR: Malformed expression");
+                }
             }
-    		if (!(input.next().toString().equals(")"))) {
-    		    throw new Exception("SYNTAX ERROR: Malformed expression");
-    		}
-        }
-    	else if (this.tok.getType() != Token.Type.IDENTIFIER &&
-                this.tok.getType() != Token.Type.INTEGER_LITERAL &&    
+            if (!(input.next().toString().equals(")"))) {
+                throw new Exception("SYNTAX ERROR: Malformed expression");
+            }
+        } else if (this.tok.getType() != Token.Type.IDENTIFIER &&
+                this.tok.getType() != Token.Type.INTEGER_LITERAL &&
                 this.tok.getType() != Token.Type.STRING_LITERAL &&
                 this.tok.getType() != Token.Type.BOOLEAN_LITERAL) {
-          throw new Exception("SYNTAX ERROR: malformed expression" + this.tok);
-    	}
+            throw new Exception("SYNTAX ERROR: malformed expression" + this.tok);
+        }
     }
 
     /**
      * Evaluates the current expression.
-     *   @return the value represented by the expression
+     * 
+     * @return the value represented by the expression
      */
     public DataValue evaluate() throws Exception {
         if (this.op == null) {
-        	if (this.tok.getType() == Token.Type.IDENTIFIER) {
+            if (this.tok.getType() == Token.Type.IDENTIFIER) {
                 if (!Interpreter.MEMORY.isDeclared(this.tok)) {
                     throw new Exception("RUNTIME ERROR: variable " + this.tok + " is undeclared");
                 }
@@ -61,7 +61,7 @@ public class Expression {
             }
         } else if (this.op.getType() == Token.Type.UNARY_OP) {
             DataValue rhs = this.expr2.evaluate();
-            
+
             if (this.op.toString().equals("not")) {
                 if (rhs.getType() == DataValue.Type.BOOLEAN_VALUE) {
                     boolean b2 = ((Boolean) (rhs.getValue()));
@@ -108,7 +108,7 @@ public class Expression {
                     } else if (op.toString().equals("%")) {
                         return new IntegerValue(num1 % num2);
                     } else if (op.toString().equals("^")) {
-                        return new IntegerValue((int)Math.pow(num1, num2));
+                        return new IntegerValue((int) Math.pow(num1, num2));
                     }
                 } else if (lhs.getType() == DataValue.Type.BOOLEAN_VALUE) {
                     boolean b1 = ((Boolean) (lhs.getValue()));
@@ -128,17 +128,16 @@ public class Expression {
 
     /**
      * Converts the current expression into a String.
-     *   @return the String representation of this expression
+     * 
+     * @return the String representation of this expression
      */
     public String toString() {
         if (this.op == null) {
             return this.tok.toString();
-        }
-        else if (this.op.getType() == Token.Type.UNARY_OP){
-	        return "(" + this.op + " " + this.expr2 + ")";
-        }
-        else {
-	        return "(" + this.expr1 + " " + this.op + " " + this.expr2 + ")";
+        } else if (this.op.getType() == Token.Type.UNARY_OP) {
+            return "(" + this.op + " " + this.expr2 + ")";
+        } else {
+            return "(" + this.expr1 + " " + this.op + " " + this.expr2 + ")";
         }
     }
 }

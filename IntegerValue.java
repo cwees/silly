@@ -11,7 +11,7 @@ public class IntegerValue implements DataValue {
      *   @param num the number being stored
      */
     public IntegerValue(int num) {
-        this.value = (Integer) num;
+        this.value = num;
     }
 
     /**
