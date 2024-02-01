@@ -67,11 +67,18 @@ public class Expression {
                     boolean b2 = ((Boolean) (rhs.getValue()));
                     return new BooleanValue(!b2);
                 }
+            } else if (this.op.toString().equals("#")) {
+                if (rhs.getType() == DataValue.Type.STRING_VALUE) {
+                    return new IntegerValue(rhs.toString().length());
+                }
+                // todo string length # applied to a string (# "foo") → 3
             }
             throw new Exception("RUNTIME ERROR: Type mismatch in unary expression");
         } else if (this.op.getType() == Token.Type.BINARY_OP) {
             DataValue lhs = this.expr1.evaluate();
             DataValue rhs = this.expr2.evaluate();
+            // todo string indexing @ applied to a string and integer ("foo" @ 0) → "f" here
+            // somewhere
 
             if (lhs.getType() == rhs.getType()) {
                 if (op.toString().equals("==")) {
@@ -120,6 +127,11 @@ public class Expression {
                         return new BooleanValue(b1 || b2);
                     }
                 }
+            } else if (lhs.getType() == DataValue.Type.STRING_VALUE
+                    && rhs.getType() == DataValue.Type.INTEGER_VALUE) {
+                String left = lhs.toString();
+                int index = ((Integer) rhs.getValue());
+                return new StringValue(left.charAt(index) + "");
             }
             throw new Exception("RUNTIME ERROR: Type mismatch in binary expression");
         }

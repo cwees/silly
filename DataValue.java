@@ -14,4 +14,5 @@ public interface DataValue extends Comparable<DataValue> {
     public DataValue.Type getType();
 
     public String toString();
+
 }

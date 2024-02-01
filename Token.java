@@ -10,9 +10,9 @@ public class Token {
     private String strVal;
 
     public static String[] keywords = { ",", "{", "}", "(", ")", "=", "print", "if", "while" };
-    public static String[] unaryOps = { "not" };
+    public static String[] unaryOps = { "not", "#" };
     public static String[] binaryOps = { "+", "~", "*", "/", "%", "^", "and", "or",
-            "==", "!=", ">", ">=", "<", "<=" };
+            "==", "!=", ">", ">=", "<", "<=", "@" };
 
     public static enum Type {
         KEYWORD, UNARY_OP, BINARY_OP, IDENTIFIER, UNKNOWN,
