@@ -69,17 +69,13 @@ public class Expression {
                 }
             } else if (this.op.toString().equals("#")) {
                 if (rhs.getType() == DataValue.Type.STRING_VALUE) {
-                    return new IntegerValue(rhs.toString().length());
+                    return new IntegerValue(rhs.toString().length() - 2);
                 }
-                // todo string length # applied to a string (# "foo") → 3
             }
             throw new Exception("RUNTIME ERROR: Type mismatch in unary expression");
         } else if (this.op.getType() == Token.Type.BINARY_OP) {
             DataValue lhs = this.expr1.evaluate();
             DataValue rhs = this.expr2.evaluate();
-            // todo string indexing @ applied to a string and integer ("foo" @ 0) → "f" here
-            // somewhere
-
             if (lhs.getType() == rhs.getType()) {
                 if (op.toString().equals("==")) {
                     return new BooleanValue(lhs.compareTo(rhs) == 0);
@@ -127,9 +123,10 @@ public class Expression {
                         return new BooleanValue(b1 || b2);
                     }
                 }
+                // todo catch if index is bigger than length of string, needs to be positive
             } else if (lhs.getType() == DataValue.Type.STRING_VALUE
                     && rhs.getType() == DataValue.Type.INTEGER_VALUE) {
-                String left = lhs.toString();
+                String left = lhs.toString().substring(1, lhs.toString().length() - 1);
                 int index = ((Integer) rhs.getValue());
                 return new StringValue(left.charAt(index) + "");
             }
