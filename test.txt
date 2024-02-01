@@ -1,1 +1,12 @@
-d
+x = 5
+y = 2
+print("foobar")
+print(-11)
+if (x > y) {
+        print("not-ok")
+        print("still-not-ok")
+    } noelse
+if (x < y) {
+        print("not-ok")
+        print("still-not-ok")
+    } noelse
