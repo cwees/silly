@@ -9,6 +9,12 @@ public class For extends Statement {
     private Integer count;
     private Integer finalcount;
 
+    public For(TokenStream input) throws Exception {
+        if (!input.next().toString().equals("for")) {
+            throw new Exception("SYNTAX ERROR: Malformed if statement");
+        }
+    }
+
     public void execute() throws Exception {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'execute'");
