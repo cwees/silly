@@ -7,6 +7,7 @@
 public class If extends Statement {
     private Expression test;
     private Compound ifBody;
+    private Compound elseBody;
 
     /**
      * Reads in an if statement from the specified stream
@@ -19,8 +20,14 @@ public class If extends Statement {
         }
         this.test = new Expression(input);
         this.ifBody = new Compound(input);
-
-        if (!input.next().toString().equals("noelse")) {
+        if (input.lookAhead().toString().equals("else")) {
+            input.next();
+            this.elseBody = new Compound(input);
+        } else if (input.next().toString().equals("noelse")) {
+            // if(input.hasNext()){
+            //     //todo if theres a compound after noelse bracket?
+            // }
+        } else {
             throw new Exception("SYNTAX ERROR: Malformed if statement");
         }
     }
@@ -34,6 +41,8 @@ public class If extends Statement {
             throw new Exception("RUNTIME ERROR: If statement requires Boolean test.");
         } else if (((Boolean) test.getValue())) {
             this.ifBody.execute();
+        } else if (this.elseBody != null) {
+            this.elseBody.execute();
         }
     }
 
@@ -43,7 +52,11 @@ public class If extends Statement {
      * @return the String representation of this statement
      */
     public String toString() {
-        return "if " + this.test + " " + this.ifBody + " noelse";
+        if (this.elseBody == null) {
+            return "if " + this.test + " " + this.ifBody + " noelse";
+        } else {
+            return "if " + this.test + " " + this.ifBody + " else" + this.elseBody;
+        }
 
     }
 }

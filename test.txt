@@ -2,12 +2,14 @@ x = 5
 y = 2
 print("foobar")
 print(-11)
-print( ("foo" @ 3) )
+print( ("foo" @ 2) )
 if (x > y) {
         print("not-ok")
         print("still-not-ok")
-    } noelse
+    } noelse 
 if (x < y) {
         print("not-ok")
         print("still-not-ok")
-    } noelse
+    } noelse{
+print("okok")
+    }
