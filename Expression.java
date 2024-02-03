@@ -71,6 +71,9 @@ public class Expression {
                 if (rhs.getType() == DataValue.Type.STRING_VALUE) {
                     return new IntegerValue(rhs.toString().length() - 2);
                 }
+                else{
+                    throw new Exception("RUNTIME ERROR: String Length operation requires a String");
+                }
             }
             throw new Exception("RUNTIME ERROR: Type mismatch in unary expression");
         } else if (this.op.getType() == Token.Type.BINARY_OP) {
@@ -123,9 +126,14 @@ public class Expression {
                         return new BooleanValue(b1 || b2);
                     }
                 }
-                // todo catch if index is bigger than length of string, needs to be positive
             } else if (lhs.getType() == DataValue.Type.STRING_VALUE
                     && rhs.getType() == DataValue.Type.INTEGER_VALUE) {
+                if ((Integer) rhs.getValue() < 0) {
+                    throw new Exception("RUNTIME ERROR: String Index Integer value must be positive");
+                }
+                if ((Integer) rhs.getValue() > lhs.toString().length() - 2) {
+                    throw new Exception("RUNTIME ERROR: String Index Integer must be in the index of String");
+                }
                 String left = lhs.toString().substring(1, lhs.toString().length() - 1);
                 int index = ((Integer) rhs.getValue());
                 return new StringValue(left.charAt(index) + "");
