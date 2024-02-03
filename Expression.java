@@ -131,7 +131,7 @@ public class Expression {
                 if ((Integer) rhs.getValue() < 0) {
                     throw new Exception("RUNTIME ERROR: String Index Integer value must be positive");
                 }
-                if ((Integer) rhs.getValue() > lhs.toString().length() - 2) {
+                if ((Integer) rhs.getValue() > lhs.toString().length() - 3) {
                     throw new Exception("RUNTIME ERROR: String Index Integer must be in the index of String");
                 }
                 String left = lhs.toString().substring(1, lhs.toString().length() - 1);
