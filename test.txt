@@ -1,2 +1,4 @@
-print("testing")
-print("foobar", "hello", "this", "is", "a", "test","that","this","works")
+
+for iterator from 1 to 5 {
+        print( "hi" )
+    }

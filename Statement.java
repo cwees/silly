@@ -26,6 +26,8 @@ public abstract class Statement {
             return new While(input);
         } else if (first.toString().equals("{")) {
             return new Compound(input);
+        } else if (first.toString().equals("for")) {
+            return new For(input);
         } else if (first.getType() == Token.Type.IDENTIFIER) {
             return new Assignment(input);
         } else {
