@@ -44,6 +44,7 @@ public class For extends Statement {
         } else{
             throw new Exception ("SYNTAX ERROR: preexisting id in for loop");
         }
+        //todo make it so that it can read the token in the compound
         // Interpreter.MEMORY.storeValue(this.tok,this.body.evaluate());
         for (int i = this.initial; i < this.finalcount+1; i++) {
             this.body.execute();
