@@ -25,7 +25,7 @@ public class If extends Statement {
             this.elseBody = new Compound(input);
         } else if (input.next().toString().equals("noelse")) {
             // if(input.hasNext()){
-            //     //todo if theres a compound after noelse bracket?
+            //     //TODO if theres a compound after noelse bracket?
             // }
         } else {
             throw new Exception("SYNTAX ERROR: Malformed if statement");

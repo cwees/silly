@@ -10,6 +10,7 @@ public class For extends Statement {
     private Integer finalcount;
     private Token tok;
     private Compound body;
+    // private Assignment assign;
 
     // todo test
     public For(TokenStream input) throws Exception {
@@ -44,7 +45,7 @@ public class For extends Statement {
         } else{
             throw new Exception ("SYNTAX ERROR: preexisting id in for loop");
         }
-        //todo make it so that it can read the token in the compound
+        //TODO make it so that it can read the token in the compound
         // Interpreter.MEMORY.storeValue(this.tok,this.body.evaluate());
         for (int i = this.initial; i < this.finalcount+1; i++) {
             this.body.execute();
