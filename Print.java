@@ -52,7 +52,7 @@ public class Print extends Statement {
             if (str.charAt(0) == '"') {
                 tester += str.substring(1, str.length() - 1) + " ";
             } else {
-                tester += str;
+                tester += str+ " ";
             }
         }
         System.err.println(tester);
