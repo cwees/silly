@@ -1,4 +1,6 @@
-
 for iterator from 1 to 5 {
         print( "hi" )
+    }
+for iterator from 1 to 5 {
+        print( iterator )
     }

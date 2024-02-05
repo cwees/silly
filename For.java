@@ -8,16 +8,18 @@
 public class For extends Statement {
     private Integer initial;
     private Integer finalcount;
-    private Token tok;
+    private Token identifier;
     private Compound body;
-    // private Assignment assign;
 
     // todo test
     public For(TokenStream input) throws Exception {
         if (!input.next().toString().equals("for")) {
             throw new Exception("SYNTAX ERROR: Malformed for statement");
         }
-        this.tok = new Token(new Expression(input).toString());
+        this.identifier = input.next();
+        if (this.identifier.getType() != Token.Type.IDENTIFIER) {
+            throw new Exception("SYNTAX ERROR: Illegal assignment in for statement (" + this.identifier + ")");
+        }
 
         if (!input.next().toString().equals("from")) {
             throw new Exception("SYNTAX ERROR: Malformed for statement");
@@ -40,21 +42,22 @@ public class For extends Statement {
 
     public void execute() throws Exception {
         Interpreter.MEMORY.beginNewScope();
-        if (!Interpreter.MEMORY.isDeclared(this.tok)) {
-            Interpreter.MEMORY.declareVariable(this.tok);
-        } else{
-            throw new Exception ("SYNTAX ERROR: preexisting id in for loop");
+        if (!Interpreter.MEMORY.isDeclared(this.identifier)) {
+            Interpreter.MEMORY.declareVariable(this.identifier);
+        } else {
+            throw new Exception("SYNTAX ERROR: preexisting id in for loop");
         }
-        //TODO make it so that it can read the token in the compound
-        // Interpreter.MEMORY.storeValue(this.tok,this.body.evaluate());
-        for (int i = this.initial; i < this.finalcount+1; i++) {
+        // TODO store this.initial value into this.identifier
+        // Interpreter.MEMORY.storeValue(this.identifier, (DataValue) this.initial);
+        for (int i = this.initial; i < this.finalcount + 1; i++) {
             this.body.execute();
         }
         Interpreter.MEMORY.endCurrentScope();
     }
 
     public String toString() {
-        return "for " + this.tok.toString() + " from " + this.initial + " to " + this.finalcount + this.body.toString();
+        return "for " + this.identifier.toString() + " from " + this.initial + " to " + this.finalcount
+                + this.body.toString();
     }
 
 }
