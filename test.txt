@@ -1,15 +1,2 @@
-x = 5
-y = 2
-print("foobar")
-print(-11)
-print( ("foo" @ 2) )
-if (x > y) {
-        print("not-ok")
-        print("still-not-ok")
-    } noelse 
-if (x < y) {
-        print("not-ok")
-        print("still-not-ok")
-    } noelse{
-print("okok")
-    }
+print("testing")
+print("foobar", "hello", "this", "is", "a", "test","that","this","works")

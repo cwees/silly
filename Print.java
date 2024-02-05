@@ -31,12 +31,14 @@ public class Print extends Statement {
         if (!input.next().toString().equals("(")) {
             throw new Exception("SYNTAX ERROR: Missing '(' in print statement");
         }
-        
         this.exprs.add(new Expression(input));
 
-        this.expr = new Expression(input);
+        while (input.lookAhead().toString().equals(",")) {
+            input.next();
+            this.exprs.add(new Expression(input));
+        }
         if (!input.next().toString().equals(")")) {
-            throw new Exception("SYNTAX ERROR: Missing ')' in print statement");
+            throw new Exception("SYNTAX ERROR: Missing ')' in print statement or missing ','");
         }
     }
 
@@ -48,19 +50,12 @@ public class Print extends Statement {
         for (int i = 0; i < this.exprs.size(); i++) {
             String str = this.exprs.get(i).evaluate().toString();
             if (str.charAt(0) == '"') {
-                tester += str.substring(1, str.length() - 1) + ", ";
+                tester += str.substring(1, str.length() - 1) + " ";
             } else {
-                tester += str + ", ";
+                tester += str;
             }
         }
         System.err.println(tester);
-
-        // String str = this.expr.evaluate().toString();
-        // if (str.charAt(0) == '"') {
-        // System.out.println(str.substring(1, str.length() - 1));
-        // } else {
-        // System.out.println(str);
-        // }
     }
 
     /**
@@ -73,7 +68,12 @@ public class Print extends Statement {
 
         String str = "print( ";
         for (int i = 0; i < this.exprs.size(); i++) {
-            str = str + this.exprs.get(i) + " ";
+            str = str + this.exprs.get(i);
+            if (i < this.exprs.size() - 1) {
+                str += ", ";
+            } else {
+                str += " ";
+            }
         }
         str = str + ")";
         return str;
