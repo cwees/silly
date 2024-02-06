@@ -1,6 +1,5 @@
-for iterator from 1 to 5 {
-        print( "hi" )
-    }
-for iterator from 1 to 5 {
-        print( iterator )
+for j from 1 to 3 {
+        for k from j to 3 {
+            print(j, k)
+        }
     }

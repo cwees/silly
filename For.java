@@ -6,13 +6,13 @@
  * 
  */
 public class For extends Statement {
-    private Integer initial;
-    private Integer finalcount;
+    private Integer initialValue;
+    private Integer finalValue;
     private Token identifier;
     private Compound body;
 
-    // todo test
     public For(TokenStream input) throws Exception {
+
         if (!input.next().toString().equals("for")) {
             throw new Exception("SYNTAX ERROR: Malformed for statement");
         }
@@ -20,48 +20,52 @@ public class For extends Statement {
         if (this.identifier.getType() != Token.Type.IDENTIFIER) {
             throw new Exception("SYNTAX ERROR: Illegal assignment in for statement (" + this.identifier + ")");
         }
-
-        if (!input.next().toString().equals("from")) {
-            throw new Exception("SYNTAX ERROR: Malformed for statement");
-        }
-        if (!(input.lookAhead().getType() == Token.Type.INTEGER_LITERAL)) {
-            throw new Exception("SYNTAX ERROR: Malformed for statement");
-        } else {
-            this.initial = Integer.valueOf(new Expression(input).toString());
-        }
-        if (!input.next().toString().equals("to")) {
-            throw new Exception("SYNTAX ERROR: Malformed for statement");
-        }
-        if (!(input.lookAhead().getType() == Token.Type.INTEGER_LITERAL)) {
-            throw new Exception("SYNTAX ERROR: Malformed for statement");
-        } else {
-            this.finalcount = Integer.valueOf(new Expression(input).toString());
-        }
-        this.body = new Compound(input);
-    }
-
-    public void execute() throws Exception {
-        Interpreter.MEMORY.beginNewScope();
         if (!Interpreter.MEMORY.isDeclared(this.identifier)) {
             Interpreter.MEMORY.declareVariable(this.identifier);
         } else {
             throw new Exception("SYNTAX ERROR: already existing id in for loop");
         }
-        Interpreter.MEMORY.storeValue(this.identifier, new IntegerValue(this.initial));
-        for (int i = this.initial; i < this.finalcount + 1; i++) {
+        if (!input.next().toString().equals("from")) {
+            throw new Exception("SYNTAX ERROR: Malformed for statement");
+        }
+        this.initialValue = getInteger(input.next());
+        if (!input.next().toString().equals("to")) {
+            throw new Exception("SYNTAX ERROR: Malformed for statement");
+        }
+        Interpreter.MEMORY.storeValue(this.identifier, new IntegerValue(this.initialValue));
+        this.finalValue = getInteger(input.next());
+        this.body = new Compound(input);
+    }
+
+    public void execute() throws Exception {
+
+        for (int i = this.initialValue; i < this.finalValue + 1; i++) {
             this.body.execute();
             int newval = Integer.valueOf(Interpreter.MEMORY.lookupValue(this.identifier).toString()) + 1;
             Interpreter.MEMORY.storeValue(this.identifier, new IntegerValue(newval));
-            ;
         }
-        Interpreter.MEMORY.endCurrentScope();
+
     }
 
     public String toString() {
-        return "for " + this.identifier.toString() + " from " + this.initial + " to " + this.finalcount
+        return "for " + this.identifier.toString() + " from " + this.initialValue + " to " + this.finalValue
                 + this.body.toString();
     }
-    // public Boolean isInteger(Token variable){
-        
-    // }
+
+    /**
+     * gets integer from token
+     * 
+     * @param variable token to be tested
+     * @return integer value from token or memory
+     * @throws Exception if variable is not an int
+     */
+    public int getInteger(Token variable) throws Exception {
+        if (variable.getType() == Token.Type.INTEGER_LITERAL) {
+            return Integer.valueOf(variable.toString());
+        } else if (Interpreter.MEMORY.lookupValue(variable).getType() == DataValue.Type.INTEGER_VALUE) {
+            return Integer.valueOf(Interpreter.MEMORY.lookupValue(variable).toString());
+        } else {
+            throw new Exception("SYNTAX ERROR: improper integer in for loop");
+        }
+    }
 }
