@@ -45,12 +45,14 @@ public class For extends Statement {
         if (!Interpreter.MEMORY.isDeclared(this.identifier)) {
             Interpreter.MEMORY.declareVariable(this.identifier);
         } else {
-            throw new Exception("SYNTAX ERROR: preexisting id in for loop");
+            throw new Exception("SYNTAX ERROR: already existing id in for loop");
         }
-        // TODO store this.initial value into this.identifier
-        // Interpreter.MEMORY.storeValue(this.identifier, (DataValue) this.initial);
+        Interpreter.MEMORY.storeValue(this.identifier, new IntegerValue(this.initial));
         for (int i = this.initial; i < this.finalcount + 1; i++) {
             this.body.execute();
+            int newval = Integer.valueOf(Interpreter.MEMORY.lookupValue(this.identifier).toString()) + 1;
+            Interpreter.MEMORY.storeValue(this.identifier, new IntegerValue(newval));
+            ;
         }
         Interpreter.MEMORY.endCurrentScope();
     }
@@ -59,5 +61,7 @@ public class For extends Statement {
         return "for " + this.identifier.toString() + " from " + this.initial + " to " + this.finalcount
                 + this.body.toString();
     }
-
+    // public Boolean isInteger(Token variable){
+        
+    // }
 }
