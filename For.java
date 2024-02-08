@@ -8,6 +8,7 @@
 public class For extends Statement {
     private Integer initialValue;
     private Integer finalValue;
+    private Integer iterator;
     private Token identifier;
     private Compound body;
 
@@ -29,21 +30,26 @@ public class For extends Statement {
             throw new Exception("SYNTAX ERROR: Malformed for statement");
         }
         this.initialValue = getInteger(input.next());
+        this.iterator = this.initialValue;
+        Interpreter.MEMORY.storeValue(this.identifier, new IntegerValue(this.initialValue));
         if (!input.next().toString().equals("to")) {
             throw new Exception("SYNTAX ERROR: Malformed for statement");
         }
-        Interpreter.MEMORY.storeValue(this.identifier, new IntegerValue(this.initialValue));
+
         this.finalValue = getInteger(input.next());
         this.body = new Compound(input);
     }
 
     public void execute() throws Exception {
 
-        for (int i = this.initialValue; i < this.finalValue + 1; i++) {
+        for (int i = Integer.valueOf(Interpreter.MEMORY.lookupValue(this.identifier).toString()); i < this.finalValue
+                + 1; i++) {
             this.body.execute();
             int newval = Integer.valueOf(Interpreter.MEMORY.lookupValue(this.identifier).toString()) + 1;
             Interpreter.MEMORY.storeValue(this.identifier, new IntegerValue(newval));
         }
+        this.iterator++;
+        Interpreter.MEMORY.storeValue(this.identifier, new IntegerValue(this.iterator));
 
     }
 
