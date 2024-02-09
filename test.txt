@@ -1,5 +1,9 @@
-for j from 1 to 3 {
-        for k from j to 3 {
-            print(j, k)
-        }
+text = "banana"
+reverse = ""
+i = 0
+print((text @ i))
+while (i < (# text)) {
+        reverse = ( reverse+ (text @ i))
+        i = (i + 1)
     }
+print(text, reverse)

@@ -70,8 +70,7 @@ public class Expression {
             } else if (this.op.toString().equals("#")) {
                 if (rhs.getType() == DataValue.Type.STRING_VALUE) {
                     return new IntegerValue(rhs.toString().length() - 2);
-                }
-                else{
+                } else {
                     throw new Exception("RUNTIME ERROR: String Length operation requires a String");
                 }
             }
@@ -127,7 +126,7 @@ public class Expression {
                     }
                 }
             } else if (lhs.getType() == DataValue.Type.STRING_VALUE
-                    && rhs.getType() == DataValue.Type.INTEGER_VALUE) {
+                    && rhs.getType() == DataValue.Type.INTEGER_VALUE && this.op.toString().equals("@")) {
                 if ((Integer) rhs.getValue() < 0) {
                     throw new Exception("RUNTIME ERROR: String Index Integer value must be positive");
                 }
