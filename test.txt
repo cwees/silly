@@ -2,9 +2,8 @@ text = "banana"
 print((# text), (text @ 0))
 reverse = ""
 i = 0
-print((text @ i))
 while (i < (# text)) {
-        reverse = ( reverse+ (text @ i))
+        reverse = ((text @ i) + reverse)
         i = (i + 1)
     }
 print(text, reverse)

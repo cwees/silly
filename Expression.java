@@ -135,7 +135,7 @@ public class Expression {
                 }
                 String left = lhs.toString().substring(1, lhs.toString().length() - 1);
                 int index = ((Integer) rhs.getValue());
-                return new StringValue(left.charAt(index) + "");
+                return new StringValue('"'+String.valueOf(left.charAt(index))+'"');
             }
             throw new Exception("RUNTIME ERROR: Type mismatch in binary expression");
         }
