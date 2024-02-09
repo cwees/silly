@@ -1,4 +1,5 @@
 text = "banana"
+print((# text), (text @ 0))
 reverse = ""
 i = 0
 print((text @ i))
