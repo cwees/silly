@@ -54,9 +54,15 @@ public class SubDec extends Statement {
 
     public void execute() throws Exception {
         // TODO Auto-generated method stub
+        // Executing a subroutine declaration when there already exists a variable or
+        // subroutine with that same name should result in a run-time error. Note: when
+        // a subroutine is declared, it is assumed to be in the global scope, regardless
+        // of where that declaration occurs.
 
-        // iterate through this.parameters, error if they have been declared before
-        // hand, else initialize
+        // global scope
+
+        // iterate through this.parameters, error if they have been declared beforehand,
+        // else initialize
         // store body somehow
         throw new UnsupportedOperationException("Unimplemented method 'execute'");
     }

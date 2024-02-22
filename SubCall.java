@@ -31,10 +31,19 @@ public class SubCall extends Statement {
 
     @Override
     public void execute() throws Exception {
+        if (!Interpreter.MEMORY.isDeclared(this.identifier)) {
+            Interpreter.MEMORY.declareVariable(this.identifier);
+        } else {
+            throw new Exception("SYNTAX ERROR: already existing id in for loop");
+        }
+        // declare new scope
+        // function
 
         // check if subdec and subcall parameter counts line up
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'execute'");
+
+        // end scope
     }
 
     @Override
