@@ -30,6 +30,10 @@ public abstract class Statement {
             return new For(input);
         } else if (first.getType() == Token.Type.IDENTIFIER) {
             return new Assignment(input);
+        } else if (first.toString().equals("sub")) {
+            return new SubDec(input);
+        } else if (first.toString().equals("call")) {
+            return new SubCall(input);
         } else {
             throw new Exception("SYNTAX ERROR: Unknown statement type (" + first + ")");
         }

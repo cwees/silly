@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class MemorySpace {
     private Stack<Scope> stackSegment;
     private ArrayList<DataValue> heapSegment;
+    //third structure for storing subroutines
 
     /**
      * Constructs an empty memory space.
