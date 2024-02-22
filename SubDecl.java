@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 
-public class SubDec extends Statement {
+public class SubDecl extends Statement {
     private Token functionName;
     private ArrayList<Token> parameters;
     private Compound body;
 
-    public SubDec(TokenStream input) throws Exception {
+    public SubDecl(TokenStream input) throws Exception {
         if (!input.next().toString().equals("sub")) {
             throw new Exception("SYNTAX ERROR: Malformed subroutine statement");
         }
@@ -35,10 +35,6 @@ public class SubDec extends Statement {
         }
 
         this.body = new Compound(input);
-        // ()
-        // (item)
-        // (item, item)
-
     }
     // <subdecl> --> 'sub' <id> '(' [ <id> { ',' <id> } ] ')' <compound>
 
@@ -53,6 +49,19 @@ public class SubDec extends Statement {
     }
 
     public void execute() throws Exception {
+        if (Interpreter.MEMORY.isDeclared(this.functionName)) {
+            throw new Exception("SYNTAX ERROR: subroutine name is already declared");
+        }else{
+            Interpreter.MEMORY.declareVariable(this.functionName);
+        }
+
+        if (this.functionName.getType() == Token.Type.INTEGER_LITERAL) {
+            Integer.valueOf(this.functionName.toString());
+        } else if (Interpreter.MEMORY.lookupValue(this.functionName).getType() == DataValue.Type.INTEGER_VALUE) {
+            Integer.valueOf(Interpreter.MEMORY.lookupValue(this.functionName).toString());
+        } else {
+            throw new Exception("SYNTAX ERROR: improper integer in for loop");
+        }
         // TODO Auto-generated method stub
         // Executing a subroutine declaration when there already exists a variable or
         // subroutine with that same name should result in a run-time error. Note: when

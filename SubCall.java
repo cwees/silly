@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class SubCall extends Statement {
     private Token functionName;
-    private ArrayList<Expression> parameters;
+    private ArrayList<Token> parameters;
 
     public SubCall(TokenStream input) throws Exception {
         if (!input.next().toString().equals("call")) {
@@ -15,10 +15,9 @@ public class SubCall extends Statement {
         if (!input.next().toString().equals("(")) {
             throw new Exception("SYNTAX ERROR: Malformed subcall statement");
         }
-        this.parameters = new ArrayList<Expression>();
+        this.parameters = new ArrayList<Token>();
         while (!input.lookAhead().toString().equals(")")) {
-            input.next();
-            this.parameters.add(new Expression(input));
+            this.parameters.add(input.next());
             if (input.lookAhead().toString().equals(",")) {
                 continue;
             }
@@ -31,18 +30,14 @@ public class SubCall extends Statement {
 
     @Override
     public void execute() throws Exception {
-        if (!Interpreter.MEMORY.isDeclared(this.identifier)) {
-            Interpreter.MEMORY.declareVariable(this.identifier);
-        } else {
-            throw new Exception("SYNTAX ERROR: already existing id in for loop");
-        }
+        Interpreter.MEMORY.beginNewScope();
+
+        Interpreter.MEMORY.endCurrentScope();
         // declare new scope
         // function
 
         // check if subdec and subcall parameter counts line up
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'execute'");
-
         // end scope
     }
 
@@ -57,4 +52,20 @@ public class SubCall extends Statement {
         return str;
     }
 
+    /**
+     * gets integer from token
+     * 
+     * @param variable token to be tested
+     * @return integer value from token or memory
+     * @throws Exception if variable is not an int
+     */
+    public int getInteger(Token variable) throws Exception {
+        if (variable.getType() == Token.Type.INTEGER_LITERAL) {
+            return Integer.valueOf(variable.toString());
+        } else if (Interpreter.MEMORY.lookupValue(variable).getType() == DataValue.Type.INTEGER_VALUE) {
+            return Integer.valueOf(Interpreter.MEMORY.lookupValue(variable).toString());
+        } else {
+            throw new Exception("SYNTAX ERROR: improper integer in for loop");
+        }
+    }
 }

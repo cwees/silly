@@ -31,7 +31,7 @@ public abstract class Statement {
         } else if (first.getType() == Token.Type.IDENTIFIER) {
             return new Assignment(input);
         } else if (first.toString().equals("sub")) {
-            return new SubDec(input);
+            return new SubDecl(input);
         } else if (first.toString().equals("call")) {
             return new SubCall(input);
         } else {
