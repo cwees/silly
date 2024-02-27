@@ -57,7 +57,6 @@ public class SubCall extends Statement {
         // end scope
     }
 
-    @Override
     public String toString() {
         String str = "call " + this.functionName + " (";
         for (int i = 0; i < this.parameters.size(); i++) {
@@ -68,20 +67,5 @@ public class SubCall extends Statement {
         return str;
     }
 
-    /**
-     * gets integer from token
-     * 
-     * @param variable token to be tested
-     * @return integer value from token or memory
-     * @throws Exception if variable is not an int
-     */
-    public int getInteger(Token variable) throws Exception {
-        if (variable.getType() == Token.Type.INTEGER_LITERAL) {
-            return Integer.valueOf(variable.toString());
-        } else if (Interpreter.MEMORY.lookupValue(variable).getType() == DataValue.Type.INTEGER_VALUE) {
-            return Integer.valueOf(Interpreter.MEMORY.lookupValue(variable).toString());
-        } else {
-            throw new Exception("SYNTAX ERROR: improper integer in for loop");
-        }
-    }
+
 }
