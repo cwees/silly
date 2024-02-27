@@ -1,9 +1,4 @@
-text = "banana"
-print((# text), (text @ 0))
-reverse = ""
-i = 0
-while (i < (# text)) {
-        reverse = ((text @ i) + reverse)
-        i = (i + 1)
+sub foo( ) {
+        print("foo")
     }
-print(text, reverse)
+call foo( )

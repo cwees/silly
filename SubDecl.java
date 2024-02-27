@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class SubDecl extends Statement {
     private Token functionName;
-    private ArrayList<Token> parameters;
+    private ArrayList<TokenStream> parameters;
     private Compound body;
 
     public SubDecl(TokenStream input) throws Exception {
@@ -16,9 +16,10 @@ public class SubDecl extends Statement {
         if (!input.next().toString().equals("(")) {
             throw new Exception("SYNTAX ERROR: Malformed subroutine statement");
         }
-        this.parameters = new ArrayList<Token>();
+        this.parameters = new ArrayList<TokenStream>();
         while (input.lookAhead().getType() == Token.Type.IDENTIFIER) {
-            this.parameters.add(input.next());
+            this.parameters.add(input);
+            input.next();
             if (!input.lookAhead().toString().equals(",")) {
                 input.next();
                 continue;
@@ -49,31 +50,33 @@ public class SubDecl extends Statement {
     }
 
     public void execute() throws Exception {
-        if (Interpreter.MEMORY.isDeclared(this.functionName)) {
-            throw new Exception("SYNTAX ERROR: subroutine name is already declared");
-        }else{
-            Interpreter.MEMORY.declareVariable(this.functionName);
+        if (Interpreter.MEMORY.isSubroutine(functionName.toString())) {
+            throw new Error("Subroutine is already declared");
+        } else if (Interpreter.MEMORY.isDeclared(functionName)) {
+            throw new Error("Subroutine Name is already declared as a variable!");
+
         }
 
-        if (this.functionName.getType() == Token.Type.INTEGER_LITERAL) {
-            Integer.valueOf(this.functionName.toString());
-        } else if (Interpreter.MEMORY.lookupValue(this.functionName).getType() == DataValue.Type.INTEGER_VALUE) {
-            Integer.valueOf(Interpreter.MEMORY.lookupValue(this.functionName).toString());
-        } else {
-            throw new Exception("SYNTAX ERROR: improper integer in for loop");
-        }
+        // System.out.println(this.body);
+        // System.out.println(functionName.toString());
+        // System.out.println(this.parameters);
+        Interpreter.MEMORY.addSubroutine(this.body, functionName.toString(), this.parameters);
+
+        // TODO just store stuff
+
+        // if (this.functionName.getType() == Token.Type.INTEGER_LITERAL) {
+        // Integer.valueOf(this.functionName.toString());
+        // } else if (Interpreter.MEMORY.lookupValue(this.functionName).getType() ==
+        // DataValue.Type.INTEGER_VALUE) {
+        // Integer.valueOf(Interpreter.MEMORY.lookupValue(this.functionName).toString());
+        // } else {
+        // throw new Exception("SYNTAX ERROR: improper integer in for loop");
+        // }
         // TODO Auto-generated method stub
         // Executing a subroutine declaration when there already exists a variable or
         // subroutine with that same name should result in a run-time error. Note: when
         // a subroutine is declared, it is assumed to be in the global scope, regardless
         // of where that declaration occurs.
-
-        // global scope
-
-        // iterate through this.parameters, error if they have been declared beforehand,
-        // else initialize
-        // store body somehow
-        throw new UnsupportedOperationException("Unimplemented method 'execute'");
     }
 
 }

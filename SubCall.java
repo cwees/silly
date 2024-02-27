@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class SubCall extends Statement {
     private Token functionName;
-    private ArrayList<Token> parameters;
+    private ArrayList<TokenStream> parameters;
 
     public SubCall(TokenStream input) throws Exception {
         if (!input.next().toString().equals("call")) {
@@ -15,9 +15,10 @@ public class SubCall extends Statement {
         if (!input.next().toString().equals("(")) {
             throw new Exception("SYNTAX ERROR: Malformed subcall statement");
         }
-        this.parameters = new ArrayList<Token>();
+        this.parameters = new ArrayList<TokenStream>();
         while (!input.lookAhead().toString().equals(")")) {
-            this.parameters.add(input.next());
+            this.parameters.add(input);
+            input.next();
             if (input.lookAhead().toString().equals(",")) {
                 continue;
             }
@@ -31,13 +32,28 @@ public class SubCall extends Statement {
     @Override
     public void execute() throws Exception {
         Interpreter.MEMORY.beginNewScope();
+        SubRoutine item = Interpreter.MEMORY.getSubroutine(this.functionName.toString());
+        if (this.parameters.size() != item.getTokens().size()) {
+            throw new Exception(
+                    "Error, number of ids and expressions in declaring & calling a subroutine do not match");
+        }
+        for (int i = 0; i < item.getTokens().size(); i++) {
+
+            Interpreter.MEMORY.declareVariable(item.getTokens().get(i).lookAhead());
+            Expression test = new Expression(this.parameters.get(i));
+            Interpreter.MEMORY.storeValue(item.getTokens().get(i).lookAhead(), test.evaluate());
+        }
+        item.getCompound().execute();
 
         Interpreter.MEMORY.endCurrentScope();
         // declare new scope
         // function
 
         // check if subdec and subcall parameter counts line up
-        // TODO Auto-generated method stub
+        // TODO only when called is when you check for variables/etc in new scope
+        // cannot reference
+
+        // cannot get variables from outside of scope/parental scopes
         // end scope
     }
 

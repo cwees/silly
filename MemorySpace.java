@@ -10,7 +10,14 @@ import java.util.ArrayList;
 public class MemorySpace {
     private Stack<Scope> stackSegment;
     private ArrayList<DataValue> heapSegment;
-    //third structure for storing subroutines
+    private ArrayList<SubRoutine> subSegment;
+    // third structure for storing subroutines
+    // store code segmentthing somewhere
+
+    // when you call subroutine, call foo on 1,2
+    // go into memory, initailize a to be 1, b to 2
+
+    // create new scope before calling it
 
     /**
      * Constructs an empty memory space.
@@ -19,6 +26,8 @@ public class MemorySpace {
         this.stackSegment = new Stack<Scope>();
         this.stackSegment.push(new Scope(null));
         this.heapSegment = new ArrayList<DataValue>();
+        this.subSegment = new ArrayList<SubRoutine>();
+
     }
 
     /**
@@ -33,6 +42,42 @@ public class MemorySpace {
      */
     public void endCurrentScope() {
         this.stackSegment.pop();
+    }
+
+    /**
+     * add new tokenstream to subSegment
+     * 
+     * @param stream TokenStream to add
+     */
+    public void addSubroutine(Compound comp, String id, ArrayList<TokenStream> tokens) {
+        this.subSegment.add(new SubRoutine(comp, id, tokens));
+    }
+    /**
+     * 
+     * @param id of subroutine
+     * @return true if ID exists, false if does not exist
+     */
+    public boolean isSubroutine(String id) {
+        for (SubRoutine sub : this.subSegment) {
+            if (sub.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 
+     * @param string id to be found in subSegment
+     * @throws Exception if id is not found
+     */
+    public SubRoutine getSubroutine(String id) throws Exception {
+        for (SubRoutine sub : this.subSegment) {
+            if (sub.getId().equals(id)) {
+                return sub;
+            }
+        }
+        throw new Exception("Error, subRoutine not found. Are you sure it is declared?");
     }
 
     /**
