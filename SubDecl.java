@@ -13,20 +13,20 @@ public class SubDecl extends Statement {
         if (this.functionName.getType() != Token.Type.IDENTIFIER) {
             throw new Exception("SYNTAX ERROR: Malformed identifier in subroutine statement");
         }
-        if (!input.next().toString().equals("(")) {
+        if (!(input.lookAhead().toString().charAt(0)=='(')) {
             throw new Exception("SYNTAX ERROR: Malformed subroutine statement");
         }
+        input.next();
         this.parameters = new ArrayList<TokenStream>();
         while (input.lookAhead().getType() == Token.Type.IDENTIFIER) {
-            this.parameters.add(input);
+            this.parameters.add(input); 
             input.next();
-            if (!input.lookAhead().toString().equals(",")) {
+            if (input.lookAhead().toString().equals(",")) {
                 input.next();
                 continue;
-            } else if (!input.lookAhead().toString().equals(")")) {
+            } else if (input.lookAhead().toString().equals(")")) {
                 break;
             } else {
-                System.out.println(input.toString());
                 throw new Exception("SYNTAX ERROR: Malformed subroutine statement");
             }
 
@@ -42,9 +42,9 @@ public class SubDecl extends Statement {
     public String toString() {
         String str = "sub " + this.functionName + "( ";
         for (int i = 0; i < this.parameters.size(); i++) {
-            str += this.parameters.get(i).toString() + ", ";
+            str += this.parameters.get(i).lookAhead().toString() + ", ";
         }
-        str = str.substring(0, str.length() - 2);
+        // str = str.substring(0, str.length() - 2);
         str += ") " + this.body.toString();
         return str;
     }
@@ -54,7 +54,6 @@ public class SubDecl extends Statement {
             throw new Error("Subroutine is already declared");
         } else if (Interpreter.MEMORY.isDeclared(functionName)) {
             throw new Error("Subroutine Name is already declared as a variable!");
-
         }
 
         // System.out.println(this.body);

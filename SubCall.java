@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class SubCall extends Statement {
     private Token functionName;
     private ArrayList<TokenStream> parameters;
+    private ArrayList<Token> parameterz;
 
     public SubCall(TokenStream input) throws Exception {
         if (!input.next().toString().equals("call")) {
@@ -16,6 +17,7 @@ public class SubCall extends Statement {
             throw new Exception("SYNTAX ERROR: Malformed subcall statement");
         }
         this.parameters = new ArrayList<TokenStream>();
+        this.parameterz = new ArrayList<Token>();
         while (!input.lookAhead().toString().equals(")")) {
             this.parameters.add(input);
             input.next();
@@ -58,11 +60,11 @@ public class SubCall extends Statement {
     }
 
     public String toString() {
-        String str = "call " + this.functionName + " (";
+        String str = "call " + this.functionName + "( ";
         for (int i = 0; i < this.parameters.size(); i++) {
             str += this.parameters.get(i).toString() + ", ";
         }
-        str = str.substring(0, str.length() - 2);
+        // str = str.substring(0, str.length() - 2);
         str += ")";
         return str;
     }

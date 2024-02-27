@@ -1,4 +1,5 @@
-sub foo( ) {
-        print("foo")
+sub add( val1 , val2 ) {
+        sum = ( val1 + val2 )
+        print( val1 , "+" , val2 , "=" , sum )
     }
-call foo( )
+call add( 2 , 4 )
