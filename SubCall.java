@@ -3,8 +3,9 @@ import java.util.ArrayList;
 public class SubCall extends Statement {
     private Token functionName;
     private ArrayList<TokenStream> parameters;
-    private ArrayList<Token> parameterz;
 
+    //TODO convert tokenstream parameters to expressions
+    
     public SubCall(TokenStream input) throws Exception {
         if (!input.next().toString().equals("call")) {
             throw new Exception("SYNTAX ERROR: Malformed subcall statement");
@@ -17,7 +18,7 @@ public class SubCall extends Statement {
             throw new Exception("SYNTAX ERROR: Malformed subcall statement");
         }
         this.parameters = new ArrayList<TokenStream>();
-        this.parameterz = new ArrayList<Token>();
+        this.parameterText = new ArrayList<Token>();
         while (!input.lookAhead().toString().equals(")")) {
             this.parameters.add(input);
             input.next();
@@ -25,6 +26,7 @@ public class SubCall extends Statement {
                 continue;
             }
         }
+        
         if (!input.next().toString().equals(")")) {
             throw new Exception("SYNTAX ERROR: Malformed subcall statement");
         }

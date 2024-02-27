@@ -5,6 +5,9 @@ public class SubDecl extends Statement {
     private ArrayList<TokenStream> parameters;
     private Compound body;
 
+    //TODO convert parameters to id's
+
+
     public SubDecl(TokenStream input) throws Exception {
         if (!input.next().toString().equals("sub")) {
             throw new Exception("SYNTAX ERROR: Malformed subroutine statement");
