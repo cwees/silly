@@ -2,10 +2,10 @@ import java.util.ArrayList;
 
 public class SubCall extends Statement {
     private Token functionName;
-    private ArrayList<TokenStream> parameters;
+    private ArrayList<Expression> expressions;
 
-    //TODO convert tokenstream parameters to expressions
-    
+    // TODO convert tokenstream parameters to expressions
+
     public SubCall(TokenStream input) throws Exception {
         if (!input.next().toString().equals("call")) {
             throw new Exception("SYNTAX ERROR: Malformed subcall statement");
@@ -15,37 +15,39 @@ public class SubCall extends Statement {
             throw new Exception("SYNTAX ERROR: Malformed identifier in subcall statement");
         }
         if (!input.next().toString().equals("(")) {
-            throw new Exception("SYNTAX ERROR: Malformed subcall statement");
+            throw new Exception("SYNTAX ERROR: Missing '(' in SubCall statement");
         }
-        this.parameters = new ArrayList<TokenStream>();
-        this.parameterText = new ArrayList<Token>();
-        while (!input.lookAhead().toString().equals(")")) {
-            this.parameters.add(input);
-            input.next();
-            if (input.lookAhead().toString().equals(",")) {
-                continue;
+        this.expressions = new ArrayList<Expression>();
+        if (!input.next().toString().equals(")")) {
+            this.expressions.add(new Expression(input));
+            
+            while (input.lookAhead().toString().equals(",")) {
+                input.next();
+                this.expressions.add(new Expression(input));
             }
         }
-        
-        if (!input.next().toString().equals(")")) {
-            throw new Exception("SYNTAX ERROR: Malformed subcall statement");
-        }
+        // if (!input.next().toString().equals(")")) {
+        //     throw new Exception("SYNTAX ERROR: Malformed subcall statement");
+        // }
         // <subcall> --> 'call' <id> '(' [ <expr> { ',' <expr> } ] ')'
     }
 
     @Override
     public void execute() throws Exception {
         Interpreter.MEMORY.beginNewScope();
+
+        if (!Interpreter.MEMORY.isSubroutine(this.functionName.toString())) {
+            throw new Exception("RUNTIME ERROR, subroutine not found");
+        }
+
         SubRoutine item = Interpreter.MEMORY.getSubroutine(this.functionName.toString());
-        if (this.parameters.size() != item.getTokens().size()) {
+        if (this.expressions.size() != item.getTokens().size()) {
             throw new Exception(
-                    "Error, number of ids and expressions in declaring & calling a subroutine do not match");
+                    "RUNTIME ERROR, number of ids and expressions in declaring & calling a subroutine do not match");
         }
         for (int i = 0; i < item.getTokens().size(); i++) {
-
-            Interpreter.MEMORY.declareVariable(item.getTokens().get(i).lookAhead());
-            Expression test = new Expression(this.parameters.get(i));
-            Interpreter.MEMORY.storeValue(item.getTokens().get(i).lookAhead(), test.evaluate());
+            Interpreter.MEMORY.declareVariable(item.getTokens().get(i));
+            Interpreter.MEMORY.storeValue(item.getTokens().get(i), this.expressions.get(i).evaluate());
         }
         item.getCompound().execute();
 
@@ -63,13 +65,12 @@ public class SubCall extends Statement {
 
     public String toString() {
         String str = "call " + this.functionName + "( ";
-        for (int i = 0; i < this.parameters.size(); i++) {
-            str += this.parameters.get(i).toString() + ", ";
+        for (int i = 0; i < this.expressions.size(); i++) {
+            str += this.expressions.get(i).toString() + ", ";
         }
         // str = str.substring(0, str.length() - 2);
         str += ")";
         return str;
     }
-
 
 }

@@ -49,7 +49,7 @@ public class MemorySpace {
      * 
      * @param stream TokenStream to add
      */
-    public void addSubroutine(Compound comp, String id, ArrayList<TokenStream> tokens) {
+    public void addSubroutine(Compound comp, String id, ArrayList<Token> tokens) {
         this.subSegment.add(new SubRoutine(comp, id, tokens));
     }
     /**

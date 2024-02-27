@@ -1,5 +1,7 @@
-sub add( val1 , val2 ) {
-        sum = ( val1 + val2 )
-        print( val1 , "+" , val2 , "=" , sum )
+print(1, (15 / 3), (true or false), ("ab" + "cd"))
+
+sub add(val1, val2) {
+        sum = (val1 + val2)
+        print(val1, "+", val2, "=", sum)
     }
-call add( 2 , 4 )
+call add(2, 4)

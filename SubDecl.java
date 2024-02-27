@@ -2,11 +2,10 @@ import java.util.ArrayList;
 
 public class SubDecl extends Statement {
     private Token functionName;
-    private ArrayList<TokenStream> parameters;
+    private ArrayList<Token> parameters;
     private Compound body;
 
-    //TODO convert parameters to id's
-
+    // TODO convert parameters to id's
 
     public SubDecl(TokenStream input) throws Exception {
         if (!input.next().toString().equals("sub")) {
@@ -16,24 +15,41 @@ public class SubDecl extends Statement {
         if (this.functionName.getType() != Token.Type.IDENTIFIER) {
             throw new Exception("SYNTAX ERROR: Malformed identifier in subroutine statement");
         }
-        if (!(input.lookAhead().toString().charAt(0)=='(')) {
+        if (!(input.next().toString().equals("("))) {
             throw new Exception("SYNTAX ERROR: Malformed subroutine statement");
         }
-        input.next();
-        this.parameters = new ArrayList<TokenStream>();
-        while (input.lookAhead().getType() == Token.Type.IDENTIFIER) {
-            this.parameters.add(input); 
+        this.parameters = new ArrayList<Token>();
+        if (!input.lookAhead().toString().equals(")")) {
+            this.parameters.add(input.lookAhead());
             input.next();
-            if (input.lookAhead().toString().equals(",")) {
+            while (input.lookAhead().toString().equals(",")) {
                 input.next();
-                continue;
-            } else if (input.lookAhead().toString().equals(")")) {
-                break;
-            } else {
-                throw new Exception("SYNTAX ERROR: Malformed subroutine statement");
+                if (input.lookAhead().getType() == Token.Type.IDENTIFIER) {
+                    this.parameters.add(input.next());
+                } else {
+                    throw new Exception("SYNTAX ERROR: Malformed identifier in subroutine statement");
+                }
             }
-
+            // input.next();
         }
+
+        // if (!input.lookAhead().toString().equals(")")) {
+        //     throw new Exception("SYNTAX ERROR: Malformed subroutine statement");
+
+        // }
+        // while (input.lookAhead().getType() == Token.Type.IDENTIFIER) {
+        // this.parameters.add(input.lookAhead());
+        // input.next();
+        // if (input.lookAhead().toString().equals(",")) {
+        // input.next();
+        // continue;
+        // } else if (input.lookAhead().toString().equals(")")) {
+        // break;
+        // } else {
+        // throw new Exception("SYNTAX ERROR: Malformed subroutine statement");
+        // }
+
+        // }
         if (!input.next().toString().equals(")")) {
             throw new Exception("SYNTAX ERROR: Malformed subroutine statement");
         }
@@ -45,7 +61,7 @@ public class SubDecl extends Statement {
     public String toString() {
         String str = "sub " + this.functionName + "( ";
         for (int i = 0; i < this.parameters.size(); i++) {
-            str += this.parameters.get(i).lookAhead().toString() + ", ";
+            str += this.parameters.get(i).toString() + ", ";
         }
         // str = str.substring(0, str.length() - 2);
         str += ") " + this.body.toString();
