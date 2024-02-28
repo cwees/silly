@@ -59,12 +59,14 @@ public class SubDecl extends Statement {
     // <subdecl> --> 'sub' <id> '(' [ <id> { ',' <id> } ] ')' <compound>
 
     public String toString() {
-        String str = "sub " + this.functionName + "( ";
+        String str = "sub " + this.functionName + "(";
         for (int i = 0; i < this.parameters.size(); i++) {
             str += this.parameters.get(i).toString() + ", ";
         }
-        // str = str.substring(0, str.length() - 2);
-        str += ") " + this.body.toString();
+        if(this.parameters.size()>0){
+            str = str.substring(0, str.length() - 2);
+        }
+        str += " ) " + this.body.toString();
         return str;
     }
 

@@ -18,17 +18,17 @@ public class SubCall extends Statement {
             throw new Exception("SYNTAX ERROR: Missing '(' in SubCall statement");
         }
         this.expressions = new ArrayList<Expression>();
-        if (!input.next().toString().equals(")")) {
+        if (!input.lookAhead().toString().equals(")")) {
             this.expressions.add(new Expression(input));
-            
+            // input.next();
             while (input.lookAhead().toString().equals(",")) {
                 input.next();
                 this.expressions.add(new Expression(input));
             }
         }
-        // if (!input.next().toString().equals(")")) {
-        //     throw new Exception("SYNTAX ERROR: Malformed subcall statement");
-        // }
+        if (!input.next().toString().equals(")")) {
+            throw new Exception("SYNTAX ERROR: Malformed subcall statement");
+        }
         // <subcall> --> 'call' <id> '(' [ <expr> { ',' <expr> } ] ')'
     }
 
@@ -64,11 +64,13 @@ public class SubCall extends Statement {
     }
 
     public String toString() {
-        String str = "call " + this.functionName + "( ";
+        String str = "call " + this.functionName + "(";
         for (int i = 0; i < this.expressions.size(); i++) {
             str += this.expressions.get(i).toString() + ", ";
         }
-        // str = str.substring(0, str.length() - 2);
+        if(this.expressions.size()>0){
+            str = str.substring(0, str.length() - 2);
+        }
         str += ")";
         return str;
     }
