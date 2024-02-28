@@ -35,6 +35,14 @@ public class MemorySpace {
      */
     public void beginNewScope() {
         this.stackSegment.push(new Scope(this.stackSegment.peek()));
+
+    }
+
+    /*
+     * Adds a new empty scope to the top of the runtime stack
+     */
+    public void beginSubScope() {
+        this.stackSegment.push(new Scope(null));
     }
 
     /**
@@ -52,6 +60,7 @@ public class MemorySpace {
     public void addSubroutine(Compound comp, String id, ArrayList<Token> tokens) {
         this.subSegment.add(new SubRoutine(comp, id, tokens));
     }
+
     /**
      * 
      * @param id of subroutine

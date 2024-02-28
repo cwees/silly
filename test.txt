@@ -1,38 +1,3 @@
-sub add(val1, val2) {
-        sum = (val1 + val2)
-        print(val1, "+", val2, "=", sum)
-    }
-call add(2, 4)
-call add("foo", "bar")
-sub foo( ) {
-        print("foo")
-    }
-call foo( )
-
-sub sumTo(num) {
-        sum = 0
-        while (num > 0) {
-            sum = (sum + num)
-            num = (num ~ 1)
-        }
-        print(sum)
-    }
-call sumTo(10)
-call sumTo((10*10))
-
-sub stamp(word, times) {
-        final = "" 
-        while (times > 0) {
-            final = (final + word)
-            times = (times~1)
-        }
-        print(final)
-    }
-call stamp("foo", 3)
-call stamp(("X"+"Y"), (4*2))
-
-
-
 sub hailstone(n) {
         if (n == 1) {
             print("1...STUCK")
@@ -46,4 +11,4 @@ sub hailstone(n) {
             call hailstone(n) 
         }
     }
-call hailstone(2)
+call hailstone(52)

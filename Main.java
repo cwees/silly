@@ -14,11 +14,11 @@ public class Main {
             Statement stmt = Statement.getStatement(inStream);
             if (!response.equals(""))
                 System.out.println(stmt);
-            try {
-                stmt.execute();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
+            // try {
+            stmt.execute();
+            // } catch (Exception e) {
+            // System.out.println(e);
+            // }
         }
     }
 }

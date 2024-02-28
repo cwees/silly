@@ -29,7 +29,12 @@ public class SubCall extends Statement {
     }
 
     public void execute() throws Exception {
-        Interpreter.MEMORY.beginNewScope();
+        // execute expressions before declaring new scope
+        ArrayList<DataValue> executedExpressions = new ArrayList<>();
+        for (int i = 0; i < this.expressions.size(); i++) {
+            executedExpressions.add(this.expressions.get(i).evaluate());
+        }
+        Interpreter.MEMORY.beginSubScope();
         if (!Interpreter.MEMORY.isSubroutine(this.functionName.toString())) {
             throw new Exception("RUNTIME ERROR, subroutine not found");
         }
@@ -39,7 +44,7 @@ public class SubCall extends Statement {
         }
         for (int i = 0; i < item.getTokens().size(); i++) {
             Interpreter.MEMORY.declareVariable(item.getTokens().get(i));
-            Interpreter.MEMORY.storeValue(item.getTokens().get(i), this.expressions.get(i).evaluate());
+            Interpreter.MEMORY.storeValue(item.getTokens().get(i), executedExpressions.get(i));
         }
         item.getCompound().execute();
         Interpreter.MEMORY.endCurrentScope();
