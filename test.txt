@@ -1,11 +1,9 @@
-print(1, (15 / 3), (true or false), ("ab" + "cd"))
-
 sub add(val1, val2) {
         sum = (val1 + val2)
         print(val1, "+", val2, "=", sum)
     }
 call add(2, 4)
-
+call add("foo", "bar")
 sub foo( ) {
         print("foo")
     }
@@ -20,7 +18,6 @@ sub sumTo(num) {
         print(sum)
     }
 call sumTo(10)
-
 call sumTo((10*10))
 
 sub stamp(word, times) {
@@ -32,7 +29,6 @@ sub stamp(word, times) {
         print(final)
     }
 call stamp("foo", 3)
-
 call stamp(("X"+"Y"), (4*2))
 
 

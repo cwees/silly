@@ -43,7 +43,7 @@ public class SubDecl extends Statement {
         if (this.parameters.size() > 0) {
             str = str.substring(0, str.length() - 2);
         }
-        str += " ) " + this.body.toString();
+        str += ") " + this.body.toString();
         return str;
     }
 
