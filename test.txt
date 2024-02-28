@@ -50,4 +50,4 @@ sub hailstone(n) {
             call hailstone(n) 
         }
     }
-call hailstone(5)
+call hailstone(2)
