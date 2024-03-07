@@ -11,13 +11,6 @@ public class MemorySpace {
     private Stack<Scope> stackSegment;
     private ArrayList<DataValue> heapSegment;
     private ArrayList<SubRoutine> subSegment;
-    // third structure for storing subroutines
-    // store code segmentthing somewhere
-
-    // when you call subroutine, call foo on 1,2
-    // go into memory, initailize a to be 1, b to 2
-
-    // create new scope before calling it
 
     /**
      * Constructs an empty memory space.
@@ -38,7 +31,7 @@ public class MemorySpace {
 
     }
 
-    /*
+    /**
      * Adds a new empty scope to the top of the runtime stack
      */
     public void beginSubScope() {

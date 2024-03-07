@@ -1,5 +1,12 @@
 import java.util.ArrayList;
 
+/**
+ * Derived class that represents a subroutine declaration statement in the SILLY
+ * language.
+ * 
+ * @author Chris He
+ * @version working
+ */
 public class SubDecl extends Statement {
     private Token functionName;
     private ArrayList<Token> parameters;

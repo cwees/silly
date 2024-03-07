@@ -1,5 +1,12 @@
 import java.util.ArrayList;
 
+/**
+ * Derived class that represents a subroutine call statement in the SILLY
+ * language.
+ * 
+ * @author Chris He
+ * @version working
+ */
 public class SubCall extends Statement {
     private Token functionName;
     private ArrayList<Expression> expressions;

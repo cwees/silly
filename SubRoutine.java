@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+ * Object utilized to pass subroutine data across subroutintes
+ */
 public class SubRoutine {
     private Compound comp;
     private String id;
